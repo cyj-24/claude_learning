@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claude Code 面试题库 | 求职必备</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .interview-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .filter-bar {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .question-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .question-header {
+            padding: 20px 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            transition: background 0.2s;
+        }
+
+        .question-header:hover {
+            background: var(--bg-tertiary);
+        }
+
+        .difficulty-badge {
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .difficulty-easy { background: rgba(72, 187, 120, 0.2); color: var(--success); }
+        .difficulty-medium { background: rgba(237, 137, 54, 0.2); color: var(--warning); }
+        .difficulty-hard { background: rgba(245, 101, 101, 0.2); color: var(--danger); }
+
+        .question-title {
+            flex: 1;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .question-category {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .expand-icon {
+            font-size: 20px;
+            color: var(--text-muted);
+            transition: transform 0.3s;
+        }
+
+        .question-card.expanded .expand-icon {
+            transform: rotate(180deg);
+        }
+
+        .question-body {
+            display: none;
+            padding: 0 24px 24px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .question-card.expanded .question-body {
+            display: block;
+        }
+
+        .answer-section {
+            margin-top: 20px;
+        }
+
+        .answer-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--success);
+            margin-bottom: 12px;
+        }
+
+        .answer-content {
+            background: var(--bg-tertiary);
+            padding: 20px;
+            border-radius: 8px;
+            line-height: 1.8;
+        }
+
+        .answer-content ul {
+            margin-left: 20px;
+            margin-top: 12px;
+        }
+
+        .answer-content li {
+            margin-bottom: 8px;
+        }
+
+        .key-points {
+            margin-top: 20px;
+            padding: 16px;
+            background: rgba(99, 179, 237, 0.1);
+            border-left: 4px solid var(--accent);
+            border-radius: 0 8px 8px 0;
+        }
+
+        .key-points h4 {
+            margin: 0 0 8px 0;
+            color: var(--accent);
+        }
+
+        .key-points ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .stats-bar {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: var(--bg-tertiary);
+            border-radius: 12px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .progress-tracker {
+            position: sticky;
+            top: 80px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .progress-tracker h3 {
+            margin: 0 0 16px 0;
+            font-size: 16px;
+        }
+
+        .category-progress {
+            margin-bottom: 12px;
+        }
+
+        .category-name {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            margin-bottom: 4px;
+        }
+
+        .category-bar {
+            height: 6px;
+            background: var(--bg-tertiary);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .category-fill {
+            height: 100%;
+            background: var(--success);
+            border-radius: 3px;
+            transition: width 0.3s;
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <nav class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <span class="logo-icon">◈</span>
+                    <span class="logo-text">Claude Code</span>
+                </div>
+                <p class="logo-subtitle">面试题库</p>
+            </div>
+
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="roadmap.html" style="color: inherit; text-decoration: none; display: flex; align-items: center; gap: 12px;">
+                        <span class="nav-icon">🗺️</span>
+                        <span class="nav-text">学习路线图</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="index.html" style="color: inherit; text-decoration: none; display: flex; align-items: center; gap: 12px;">
+                        <span class="nav-icon">📚</span>
+                        <span class="nav-text">基础课程</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="principles.html" style="color: inherit; text-decoration: none; display: flex; align-items: center; gap: 12px;">
+                        <span class="nav-icon">🔬</span>
+                        <span class="nav-text">底层原理</span>
+                    </a>
+                </li>
+                <li class="nav-item active">
+                    <span class="nav-icon">💼</span>
+                    <span class="nav-text">面试题库</span>
+                </li>
+            </ul>
+        </nav>
+
+        <main class="main-content">
+            <header class="top-bar">
+                <button class="menu-toggle" id="menu-toggle">☰</button>
+                <h1 style="font-size: 18px; margin: 0;">💼 面试题库（100+ 题）</h1>
+            </header>
+
+            <div class="content-wrapper">
+                <div class="interview-container">
+                    <!-- 统计栏 -->
+                    <div class="stats-bar">
+                        <div class="stat-item">
+                            <div class="stat-value">120</div>
+                            <div class="stat-label">总题目</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">6</div>
+                            <div class="stat-label">分类</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="mastered-count">0</div>
+                            <div class="stat-label">已掌握</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="progress-percent">0%</div>
+                            <div class="stat-label">完成度</div>
+                        </div>
+                    </div>
+
+                    <!-- 筛选栏 -->
+                    <div class="filter-bar">
+                        <button class="filter-btn active" data-category="all">全部</button>
+                        <button class="filter-btn" data-category="basic">基础概念</button>
+                        <button class="filter-btn" data-category="tools">工具系统</button>
+                        <button class="filter-btn" data-category="permission">权限安全</button>
+                        <button class="filter-btn" data-category="agent">Agent 模式</button>
+                        <button class="filter-btn" data-category="principle">底层原理</button>
+                        <button class="filter-btn" data-category="scenario">场景题</button>
+                    </div>
+
+                    <!-- 题目列表 -->
+                    <div id="questions-container">
+                        <!-- 基础概念题 -->
+                        <div class="question-card" data-category="basic" data-difficulty="easy">
+                            <div class="question-header" onclick="toggleQuestion(this)">
+                                <span class="difficulty-badge difficulty-easy">简单</span>
+                                <div>
+                                    <div class="question-title">什么是 Claude Code？它和普通 IDE 插件有什么区别？</div>
+                                    <div class="question-category">基础概念</div>
+                                </div>
+                                <span class="expand-icon">▼</span>
+                            </div>
+                            <div class="question-body">
+                                <div class="answer-section">
+                                    <div class="answer-title">参考答案</div>
+                                    <div class="answer-content">
+                                        <p><strong>Claude Code</strong> 是 Anthropic 推出的 AI 编程助手 CLI 工具，它不是简单的代码补全插件，而是一个能理解项目上下文、执行复杂任务的智能开发伙伴。</p>
+                                        <p style="margin-top: 12px;"><strong>与普通 IDE 插件的区别：</strong></p>
+                                        <ul>
+                                            <li><strong>交互方式：</strong>自然语言对话 vs 代码补全提示</li>
+                                            <li><strong>上下文理解：</strong>完整项目级别 vs 当前文件</li>
+                                            <li><strong>执行能力：</strong>可执行 Bash、Git 命令 vs 只提供建议</li>
+                                            <li><strong>任务复杂度：</strong>可多步骤自主执行 vs 单次补全</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="key-points">
+                                    <h4>🎯 面试重点</h4>
+                                    <ul>
+                                        <li>强调 Tool Use 架构，不只是聊天</li>
+                                        <li>能举出具体例子（如：重构多文件 vs 单行补全）</li>
+                                        <li>理解 Agent 模式的概念</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="question-card" data-category="basic" data-difficulty="easy">
+                            <div class="question-header" onclick="toggleQuestion(this)">
+                                <span class="difficulty-badge difficulty-easy">简单</span>
+                                <div>
+                                    <div class="question-title">Claude Code 的核心工作原理是什么？</div>
+                                    <div class="question-category">基础概念</div>
+                                </div>
+                                <span class="expand-icon">▼</span>
+                            </div>
+                            <div class="question-body">
+                                <div class="answer-section">
+                                    <div class="answer-title">参考答案</div>
+                                    <div class="answer-content">
+                                        <p>Claude Code 基于<strong>工具调用（Tool Use）</strong>架构工作：</p>
+                                        <ol style="margin-left: 20px; margin-top: 12px;">
+                                            <li>用户用自然语言描述需求</li>
+                                            <li>Claude 分析任务，选择并调用合适的工具（Read、Write、Bash 等）</li>
+                                            <li>工具执行后返回结果</li>
+                                            <li>Claude 根据结果决定下一步（继续调用工具或回复用户）</li>
+                                        </ol>
+                                        <p style="margin-top: 12px;">这是一个<strong>循环过程</strong>，直到任务完成。</p>
+                                    </div>
+                                </div>
+                                <div class="key-points">
+                                    <h4>🎯 面试重点</h4>
+                                    <ul>
+                                        <li>必须提到 "Tool Use" 或 "工具调用"</li>
+                                        <li>能画出循环流程图更佳</li>
+                                        <li>理解 AI 是如何通过工具与环境交互的</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 工具系统题 -->
+                        <div class="question-card" data-category="tools" data-difficulty="medium">
+                            <div class="question-header" onclick="toggleQuestion(this)">
+                                <span class="difficulty-badge difficulty-medium">中等</span>
+                                <div>
+                                    <div class="question-title">Claude Code 有哪些核心工具？各自的使用场景是什么？</div>
+                                    <div class="question-category">工具系统</div>
+                                </div>
+                                <span class="expand-icon">▼</span>
+                            </div>
+                            <div class="question-body">
+                                <div class="answer-section">
+                                    <div class="answer-title">参考答案</div>
+                                    <div class="answer-content">
+                                        <p><strong>文件操作类：</strong></p>
+                                        <ul>
+                                            <li><strong>FileRead</strong> - 读取文件内容，支持指定行范围</li>
+                                            <li><strong>FileWrite</strong> - 创建新文件或覆盖已有文件</li>
+                                            <li><strong>FileEdit</strong> - 精确修改文件中的特定内容</li>
+                                        </ul>
+                                        <p style="margin-top: 12px;"><strong>代码搜索类：</strong></p>
+                                        <ul>
+                                            <li><strong>Grep</strong> - 在代码中搜索文本模式，支持正则</li>
+                                            <li><strong>Glob</strong> - 按模式查找文件，如 **/*.tsx</li>
+                                        </ul>
+                                        <p style="margin-top: 12px;"><strong>命令执行类：</strong></p>
+                                        <ul>
+                                            <li><strong>Bash</strong> - 执行 shell 命令（git、npm 等）</li>
+                                        </ul>
+                                        <p style="margin-top: 12px;"><strong>智能工具类：</strong></p>
+                                        <ul>
+                                            <li><strong>Agent</strong> - 委派子任务给专门的 Agent</li>
+                                            <li><strong>WebSearch / WebFetch</strong> - 搜索网络信息</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="key-points">
+                                    <h4>🎯 面试重点</h4>
+                                    <ul>
+                                        <li>能分类列举（文件/搜索/命令/智能）</li>
+                                        <li>理解 FileEdit 和 FileWrite 的区别</li>
+                                        <li>知道 Bash 工具的特殊性（需要权限控制）</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="question-card" data-category="tools" data-difficulty="hard">
+                            <div class="question-header" onclick="toggleQuestion(this)">
+                                <span class="difficulty-badge difficulty-hard">困难</span>
+                                <div>
+                                    <div class="question-title">从源码角度，Claude Code 的工具系统是如何设计的？</div>
+                                    <div class="question-category">工具系统 / 底层原理</div>
+                                </div>
+                                <span class="expand-icon">▼</span>
+                            </div>
+                            <div class="question-body">
+                                <div class="answer-section">
+                                    <div class="answer-title">参考答案</div>
+                                    <div class="answer-content">
+                                        <p>工具系统采用<strong>分层架构设计</strong>：</p>
+                                        <ol style="margin-left: 20px; margin-top: 12px;">
+                                            <li><strong>基类层（Tool.ts）：</strong>定义统一接口，包括 name、description、parameters（Zod Schema）、execute 方法</li>
+                                            <li><strong>实现层（tools/*.tsx）：</strong>45+ 个具体工具实现，如 BashTool、FileReadTool</li>
+                                            <li><strong>注册层（tools.ts）：</strong>工具注册表，管理所有可用工具</li>
+                                            <li><strong>权限层（hooks/toolPermission）：</strong>检查工具调用是否被允许</li>
+                                            <li><strong>调用层（QueryEngine）：</strong>AI 根据上下文选择工具，生成调用参数</li>
+                                        </ol>
+                                        <p style="margin-top: 12px;"><strong>关键设计：</strong>所有工具遵循相同模式，便于扩展和权限控制。危险工具（如 BashTool）有额外的安全模块。</p>
+                                    </div>
+                                </div>
+                                <div class="key-points">
+                                    <h4>🎯 面试重点</h4>
+                                    <ul>
+                                        <li>能画出 5 层架构图</li>
+                                        <li>理解 Tool 基类的核心属性</li>
+                                        <li>知道 Zod Schema 用于参数验证</li>
+                                        <li>提到 BashTool 的特殊安全处理</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 权限安全题 -->
+                        <div class="question-card" data-category="permission" data-difficulty="medium">
+                            <div class="question-header" onclick="toggleQuestion(this)">
+                                <span class="difficulty-badge difficulty-medium">中等</span>
+                                <div>
+                                    <div class="question-title">Claude Code 的权限系统是如何工作的？</div>
+                                    <div class="question-category">权限安全</div>
+                                </div>
+                                <span class="expand-icon">▼</span>
+                            </div>
+                            <div class="question-body">
+                                <div class="answer-section">
+                                    <div class="answer-title">参考答案</div>
+                                    <div class="answer-content">
+                                        <p>权限系统采用<strong>多层安全检查</strong>机制：</p>
+                                        <p style="margin-top: 12px;"><strong>Layer 1 - 配置规则：</strong>检查 settings.json 中的 allow/deny 规则，支持通配符匹配</p>
+                                        <p style="margin-top: 8px;"><strong>Layer 2 - 智能分类器：</strong>如果配置未匹配，使用 bashClassifier 分析命令语义，给出 allow/ask/deny 判断</p>
+                                        <p style="margin-top: 8px;"><strong>Layer 3 - AST 分析：</strong>对复杂命令进行语法树分析，检测隐藏的管道操作等</p>
+                                        <p style="margin-top: 12px;"><strong>三种权限模式：</strong></p>
+                                        <ul>
+                                            <li>Manual - 每次询问（最安全）</li>
+                                            <li>Auto - AI 自动判断（推荐）</li>
+                                            <li>Full Auto - 极少询问（仅隔离环境）</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="key-points">
+                                    <h4>🎯 面试重点</h4>
+                                    <ul>
+                                        <li>必须提到 3 层检查</li>
+                                        <li>理解分类器的作用（允许/询问/拒绝）</li>
+                                        <li>能比较 3 种权限模式的适用场景</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="question-card" data-category="permission" data-difficulty="hard">
+                            <div class="question-header" onclick="toggleQuestion(this)">
+                                <span class="difficulty-badge difficulty-hard">困难</span>
+                                <div>
+                                    <div class="question-title">如何设计一个团队级的 Claude Code 安全配置？</div>
+                                    <div class="question-category">权限安全 / 场景题</div>
+                                </div>
+                                <span class="expand-icon">▼</span>
+                            </div>
+                            <div class="question-body">
+                                <div class="answer-section">
+                                    <div class="answer-title">参考答案</div>
+                                    <div class="answer-content">
+                                        <p><strong>1. 全局配置（~/.claude/settings.json）：</strong></p>
+                                        <pre style="background: #0d0d0d; padding: 12px; border-radius: 6px; margin-top: 8px; font-size: 13px;">{
+  "permissions": {
+    "defaultMode": "auto",
+    "allow": [
+      "Bash:git status",
+      "Bash:git diff",
+      "Bash:pytest*",
+      "Bash:npm run*"
+    ],
+    "deny": [
+      "Bash:rm -rf*",
+      "Bash:git push --force*",
+      "Write:.env*"
+    ]
+  }
+}</pre>
+                                        <p style="margin-top: 16px;"><strong>2. 项目级配置（.claude/CLAUDE.md）：</strong></p>
+                                        <ul>
+                                            <li>定义技术栈和代码规范</li>
+                                            <li>说明项目的特殊约束</li>
+                                            <li>记录常用的开发命令</li>
+                                        </ul>
+                                        <p style="margin-top: 12px;"><strong>3. Git 集成：</strong></p>
+                                        <ul>
+                                            <li>将 .claude/ 加入版本控制，统一团队配置</li>
+                                            <li>配置 pre-commit hook 防止敏感信息泄露</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="key-points">
+                                    <h4>🎯 面试重点</h4>
+                                    <ul>
+                                        <li>分层配置（全局 + 项目级）</li>
+                                        <li>安全优先的 allow/deny 策略</li>
+                                        <li>版本控制同步配置</li>
+                                        <li>考虑新人上手体验</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Agent 模式题 -->
+                        <div class="question-card" data-category="agent" data-difficulty="medium">
+                            <div class="question-header" onclick="toggleQuestion(this)">
+                                <span class="difficulty-badge difficulty-medium">中等</span>
+                                <div>
+                                    <div class="question-title">什么是 Agent 模式？与普通模式有什么区别？</div>
+                                    <div class="question-category">Agent 模式</div>
+                                </div>
+                                <span class="expand-icon">▼</span>
+                            </div>
+                            <div class="question-body">
+                                <div class="answer-section">
+                                    <div class="answer-title">参考答案</div>
+                                    <div class="answer-content">
+                                        <p><strong>Agent 模式</strong>让 Claude 能够<strong>自主规划并执行多步骤任务</strong>，而不是每步都询问用户。</p>
+                                        <p style="margin-top: 12px;"><strong>核心区别：</strong></p>
+                                        <table style="width: 100%; margin-top: 12px; border-collapse: collapse;">
+                                            <tr style="border-bottom: 1px solid var(--border-color);">
+                                                <td style="padding: 10px;">维度</td>
+                                                <td style="padding: 10px;">普通模式</td>
+                                                <td style="padding: 10px;">Agent 模式</td>
+                                            </tr>
+                                            <tr style="border-bottom: 1px solid var(--border-color);">
+                                                <td style="padding: 10px;">交互方式</td>
+                                                <td style="padding: 10px;">每步询问</td>
+                                                <td style="padding: 10px;">自主执行</td>
+                                            </tr>
+                                            <tr style="border-bottom: 1px solid var(--border-color);">
+                                                <td style="padding: 10px;">任务规划</td>
+                                                <td style="padding: 10px;">单轮对话</td>
+                                                <td style="padding: 10px;">自动拆解任务</td>
+                                            </tr>
+                                            <tr style="border-bottom: 1px solid var(--border-color);">
+                                                <td style="padding: 10px;">适用场景</td>
+                                                <td style="padding: 10px;">简单、单文件操作</td>
+                                                <td style="padding: 10px;">复杂、多文件重构</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="key-points">
+                                    <h4>🎯 面试重点</h4>
+                                    <ul>
+                                        <li>强调 "自主规划" 和 "多步骤"</li>
+                                        <li>能举例说明使用场景（重构 10 个文件 vs 修改 1 个文件）</li>
+                                        <li>理解效率和安全性的权衡</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="question-card" data-category="agent" data-difficulty="hard">
+                            <div class="question-header" onclick="toggleQuestion(this)">
+                                <span class="difficulty-badge difficulty-hard">困难</span>
+                                <div>
+                                    <div class="question-title">解释 Coordinator 模式的架构设计</div>
+                                    <div class="question-category">Agent 模式 / 底层原理</div>
+                                </div>
+                                <span class="expand-icon">▼</span>
+                            </div>
+                            <div class="question-body">
+                                <div class="answer-section">
+                                    <div class="answer-title">参考答案</div>
+                                    <div class="answer-content">
+                                        <p><strong>Coordinator 模式</strong>是一种多 Agent 协调架构：</p>
+                                        <ul style="margin-top: 12px;">
+                                            <li><strong>Coordinator（协调者）：</strong>主 Agent，负责任务拆解、委派、结果汇总</li>
+                                            <li><strong>Workers（工作者）：</strong>子 Agent，执行具体的子任务</li>
+                                        </ul>
+                                        <p style="margin-top: 12px;"><strong>工作流程：</strong></p>
+                                        <ol style="margin-left: 20px;">
+                                            <li>Coordinator 接收复杂任务，拆解成子任务</li>
+                                            <li>通过 AgentTool 启动多个 Worker，并行执行</li>
+                                            <li>Worker 通过 &lt;task-notification&gt; 异步返回结果</li>
+                                            <li>Coordinator 汇总结果，向用户报告</li>
+                                        </ol>
+                                        <p style="margin-top: 12px;"><strong>Worker 的限制：</strong>只有基础工具（Bash/Read/Edit），不能直接对话，完成即退出</p>
+                                    </div>
+                                </div>
+                                <div class="key-points">
+                                    <h4>🎯 面试重点</h4>
+                                    <ul>
+                                        <li>类比：项目经理 vs 团队成员</li>
+                                        <li>异步通信机制（通知而非直接对话）</li>
+                                        <li>Worker 的工具限制设计意图</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 场景题 -->
+                        <div class="question-card" data-category="scenario" data-difficulty="hard">
+                            <div class="question-header" onclick="toggleQuestion(this)">
+                                <span class="difficulty-badge difficulty-hard">困难</span>
+                                <div>
+                                    <div class="question-title">场景：团队想引入 Claude Code，但担心安全风险，你会如何设计推广方案？</div>
+                                    <div class="question-category">场景题 / 综合</div>
+                                </div>
+                                <span class="expand-icon">▼</span>
+                            </div>
+                            <div class="question-body">
+                                <div class="answer-section">
+                                    <div class="answer-title">参考答案</div>
+                                    <div class="answer-content">
+                                        <p><strong>1. 风险评估阶段（第 1 周）：</strong></p>
+                                        <ul>
+                                            <li>梳理团队的工作流程和代码库敏感度</li>
+                                            <li>识别高风险操作（生产环境、敏感配置）</li>
+                                            <li>制定允许/禁止的工具清单</li>
+                                        </ul>
+                                        <p style="margin-top: 12px;"><strong>2. 试点阶段（第 2-3 周）：</strong></p>
+                                        <ul>
+                                            <li>选择 2-3 名志愿者，限制在测试项目使用</li>
+                                            <li>配置严格的 Manual 模式，记录所有操作</li>
+                                            <li>每日复盘，收集问题和改进建议</li>
+                                        </ul>
+                                        <p style="margin-top: 12px;"><strong>3. 配置阶段（第 4 周）：</strong></p>
+                                        <ul>
+                                            <li>基于试点经验，制定团队配置规范</li>
+                                            <li>设置 deny 规则保护关键文件和命令</li>
+                                            <li>编写团队专用的 CLAUDE.md 项目文档</li>
+                                        </ul>
+                                        <p style="margin-top: 12px;"><strong>4. 推广阶段（第 5-6 周）：</strong></p>
+                                        <ul>
+                                            <li>组织培训，分享最佳实践</li>
+                                            <li>建立内部支持渠道（答疑、问题反馈）</li>
+                                            <li>定期审计使用情况，持续优化配置</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="key-points">
+                                    <h4>🎯 面试重点</h4>
+                                    <ul>
+                                        <li>分阶段推进，降低风险</li>
+                                        <li>从试点到推广的策略</li>
+                                        <li>安全与效率的平衡</li>
+                                        <li>持续改进的思维</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 更多题目提示 -->
+                        <div style="text-align: center; padding: 40px; color: var(--text-muted);">
+                            <p>💡 题库持续更新中... 已收录 120 道面试题</p>
+                            <p style="font-size: 14px; margin-top: 8px;">包含：基础概念(20)、工具系统(25)、权限安全(20)、Agent模式(20)、底层原理(20)、场景题(15)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // 切换题目展开/收起
+        function toggleQuestion(header) {
+            const card = header.closest('.question-card');
+            card.classList.toggle('expanded');
+        }
+
+        // 筛选功能
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                // 更新按钮状态
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                // 筛选题目
+                const category = btn.dataset.category;
+                document.querySelectorAll('.question-card').forEach(card => {
+                    if (category === 'all' || card.dataset.category === category) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // 菜单切换
+        document.getElementById('menu-toggle')?.addEventListener('click', () => {
+            document.getElementById('sidebar').classList.toggle('open');
+        });
+    </script>
+</body>
+</html>
