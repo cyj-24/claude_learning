@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claude Code 完全学习指南 | 从零基础到自动化工作流</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app">
+        <!-- 侧边导航 -->
+        <nav class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <span class="logo-icon">◈</span>
+                    <span class="logo-text">Claude Code</span>
+                </div>
+                <p class="logo-subtitle">完全学习指南</p>
+            </div>
+
+            <div class="progress-section">
+                <div class="progress-info">
+                    <span>学习进度</span>
+                    <span id="progress-text">0%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+            </div>
+
+            <ul class="nav-menu">
+                <li class="nav-item active" data-section="welcome">
+                    <span class="nav-icon">🏠</span>
+                    <span class="nav-text">欢迎开始</span>
+                </li>
+                <li class="nav-item" data-section="chapter1">
+                    <span class="nav-number">1</span>
+                    <span class="nav-text">初识 Claude Code</span>
+                </li>
+                <li class="nav-item" data-section="chapter2">
+                    <span class="nav-number">2</span>
+                    <span class="nav-text">核心工具系统</span>
+                </li>
+                <li class="nav-item" data-section="chapter3">
+                    <span class="nav-number">3</span>
+                    <span class="nav-text">命令与技能</span>
+                </li>
+                <li class="nav-item" data-section="chapter4">
+                    <span class="nav-number">4</span>
+                    <span class="nav-text">权限与安全</span>
+                </li>
+                <li class="nav-item" data-section="chapter5">
+                    <span class="nav-number">5</span>
+                    <span class="nav-text">高级功能</span>
+                </li>
+                <li class="nav-item" data-section="chapter6">
+                    <span class="nav-number">6</span>
+                    <span class="nav-text">实战案例</span>
+                </li>
+                <li class="nav-item" data-section="resources">
+                    <span class="nav-icon">📚</span>
+                    <span class="nav-text">参考资源</span>
+                </li>
+            </ul>
+
+            <div class="sidebar-footer">
+                <button class="toggle-btn" id="theme-toggle">🌙 深色模式</button>
+            </div>
+        </nav>
+
+        <!-- 主内容区 -->
+        <main class="main-content">
+            <!-- 顶部栏 -->
+            <header class="top-bar">
+                <button class="menu-toggle" id="menu-toggle">☰</button>
+                <div class="search-box">
+                    <input type="text" placeholder="搜索知识点..." id="search-input">
+                    <span class="search-icon">🔍</span>
+                </div>
+                <div class="user-actions">
+                    <button class="btn btn-secondary" onclick="showQuiz()">📝 测试一下</button>
+                </div>
+            </header>
+
+            <!-- 内容容器 -->
+            <div class="content-wrapper" id="content-wrapper">
+                <!-- 欢迎页 -->
+                <section class="content-section active" id="welcome">
+                    <div class="hero">
+                        <h1>🚀 掌握 Claude Code<br><span class="gradient-text">从入门到自动化工作流</span></h1>
+                        <p class="hero-subtitle">无需编程基础，系统学习 Anthropic 最强 AI 编程助手的核心原理与实战技巧</p>
+                        <div class="hero-stats">
+                            <div class="stat">
+                                <span class="stat-number">30+</span>
+                                <span class="stat-label">内置工具</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number">40+</span>
+                                <span class="stat-label">实用命令</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number">5</span>
+                                <span class="stat-label">学习阶段</span>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary btn-large" onclick="startLearning()">开始学习 →</button>
+                    </div>
+
+                    <div class="feature-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">🔧</div>
+                            <h3>工具系统</h3>
+                            <p>深入理解 Bash、文件编辑、代码搜索等 30+ 工具的工作原理</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">🛡️</div>
+                            <h3>权限控制</h3>
+                            <p>掌握 Auto Mode、Full Auto 等权限模式，安全高效地使用 AI</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">🤖</div>
+                            <h3>Agent 模式</h3>
+                            <p>学习多 Agent 协调、任务规划等高级功能，实现复杂任务自动化</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">⚡</div>
+                            <h3>自动化工作流</h3>
+                            <p>通过 Hooks 和配置，打造个性化的 AI 开发助手</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 第1章：初识 Claude Code -->
+                <section class="content-section" id="chapter1">
+                    <div class="chapter-header">
+                        <span class="chapter-badge">第 1 章</span>
+                        <h1>初识 Claude Code</h1>
+                        <p class="chapter-desc">了解 Claude Code 的定位、核心能力和适用场景</p>
+                    </div>
+
+                    <div class="lesson-content">
+                        <h2>🤔 Claude Code 是什么？</h2>
+                        <div class="concept-box">
+                            <p><strong>Claude Code</strong> 是 Anthropic 推出的 AI 编程助手 CLI 工具。它不是一个简单的代码补全工具，而是一个能理解项目上下文、执行复杂任务的<strong>智能开发伙伴</strong>。</p>
+                        </div>
+
+                        <h3>核心能力对比</h3>
+                        <table class="comparison-table">
+                            <tr>
+                                <th>能力</th>
+                                <th>传统 IDE</th>
+                                <th>Copilot</th>
+                                <th>Claude Code</th>
+                            </tr>
+                            <tr>
+                                <td>代码补全</td>
+                                <td>✅</td>
+                                <td>✅</td>
+                                <td>✅</td>
+                            </tr>
+                            <tr>
+                                <td>多文件理解</td>
+                                <td>❌</td>
+                                <td>⚠️ 有限</td>
+                                <td>✅ 完整项目</td>
+                            </tr>
+                            <tr>
+                                <td>执行命令</td>
+                                <td>❌</td>
+                                <td>❌</td>
+                                <td>✅ Bash/Git</td>
+                            </tr>
+                            <tr>
+                                <td>自动规划任务</td>
+                                <td>❌</td>
+                                <td>❌</td>
+                                <td>✅ Agent 模式</td>
+                            </tr>
+                        </table>
+
+                        <h2>🎯 适用场景</h2>
+                        <div class="scenario-grid">
+                            <div class="scenario-card">
+                                <h4>📁 代码库探索</h4>
+                                <p>接手新项目时，快速理解代码结构、找到关键文件</p>
+                            </div>
+                            <div class="scenario-card">
+                                <h4>🔍 Bug 修复</h4>
+                                <p>根据错误信息，自动定位问题并修复</p>
+                            </div>
+                            <div class="scenario-card">
+                                <h4>✨ 功能开发</h4>
+                                <p>从需求描述到完整实现，包括测试和文档</p>
+                            </div>
+                            <div class="scenario-card">
+                                <h4>🔄 批量重构</h4>
+                                <p>跨越多文件的代码重构，保持一致性</p>
+                            </div>
+                        </div>
+
+                        <h2>💡 工作方式</h2>
+                        <div class="workflow-diagram">
+                            <div class="workflow-step">
+                                <div class="step-num">1</div>
+                                <div class="step-content">
+                                    <h4>你描述需求</h4>
+                                    <p>用自然语言告诉 Claude 你想做什么</p>
+                                </div>
+                            </div>
+                            <div class="workflow-arrow">→</div>
+                            <div class="workflow-step">
+                                <div class="step-num">2</div>
+                                <div class="step-content">
+                                    <h4>Claude 规划任务</h4>
+                                    <p>分析需求，拆解成可执行的步骤</p>
+                                </div>
+                            </div>
+                            <div class="workflow-arrow">→</div>
+                            <div class="workflow-step">
+                                <div class="step-num">3</div>
+                                <div class="step-content">
+                                    <h4>执行与反馈</h4>
+                                    <p>使用工具操作文件、运行命令，展示结果</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tip-box">
+                            <strong>💡 关键理解</strong>
+                            <p>Claude Code 的核心是<strong>工具调用（Tool Use）</strong>。它通过调用一系列工具（读文件、写文件、运行命令等）来完成任务，而不是仅仅生成代码建议。</p>
+                        </div>
+                    </div>
+
+                    <div class="section-nav">
+                        <button class="btn btn-secondary" onclick="showSection('welcome')">← 返回欢迎页</button>
+                        <button class="btn btn-primary" onclick="showSection('chapter2')">下一章：核心工具系统 →</button>
+                    </div>
+                </section>
+
+                <!-- 第2章：核心工具系统 -->
+                <section class="content-section" id="chapter2">
+                    <div class="chapter-header">
+                        <span class="chapter-badge">第 2 章</span>
+                        <h1>核心工具系统</h1>
+                        <p class="chapter-desc">理解 Claude Code 的 30+ 工具及其协同工作原理</p>
+                    </div>
+
+                    <div class="lesson-content">
+                        <h2>🔧 什么是工具（Tool）？</h2>
+                        <div class="concept-box">
+                            <p>工具是 Claude Code 与外部世界交互的<strong>能力单元</strong>。每个工具都有特定功能，比如读取文件、执行命令、搜索代码等。Claude 根据任务需求，智能选择和组合工具。</p>
+                        </div>
+
+                        <h2>📂 文件操作工具</h2>
+                        <div class="tool-category">
+                            <div class="tool-card">
+                                <div class="tool-header">
+                                    <span class="tool-name">FileRead</span>
+                                    <span class="tool-tag">读取</span>
+                                </div>
+                                <p class="tool-desc">读取文件内容，支持指定行范围</p>
+                                <div class="tool-example">
+                                    <code>Read:0→{"file_path": "/path/to/file.ts"}</code>
+                                </div>
+                            </div>
+                            <div class="tool-card">
+                                <div class="tool-header">
+                                    <span class="tool-name">FileWrite</span>
+                                    <span class="tool-tag">写入</span>
+                                </div>
+                                <p class="tool-desc">创建新文件或覆盖已有文件</p>
+                                <div class="tool-example">
+                                    <code>Write:1→{"file_path": "test.txt", "content": "..."}</code>
+                                </div>
+                            </div>
+                            <div class="tool-card">
+                                <div class="tool-header">
+                                    <span class="tool-name">FileEdit</span>
+                                    <span class="tool-tag">编辑</span>
+                                </div>
+                                <p class="tool-desc">精确修改文件中的特定内容</p>
+                                <div class="tool-example">
+                                    <code>Edit:2→{"file_path": "...", "old_string": "...", "new_string": "..."}</code>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h2>🔍 代码搜索工具</h2>
+                        <div class="tool-category">
+                            <div class="tool-card">
+                                <div class="tool-header">
+                                    <span class="tool-name">Grep</span>
+                                    <span class="tool-tag">搜索</span>
+                                </div>
+                                <p class="tool-desc">在代码中搜索文本模式，支持正则</p>
+                                <div class="tool-example">
+                                    <code>Grep:3→{"pattern": "function.*main", "path": "./src"}</code>
+                                </div>
+                            </div>
+                            <div class="tool-card">
+                                <div class="tool-header">
+                                    <span class="tool-name">Glob</span>
+                                    <span class="tool-tag">文件匹配</span>
+                                </div>
+                                <p class="tool-desc">按模式查找文件，如 **/*.tsx</p>
+                                <div class="tool-example">
+                                    <code>Glob:4→{"pattern": "**/*.test.ts"}</code>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h2>⚡ 命令执行工具</h2>
+                        <div class="tool-category">
+                            <div class="tool-card highlight">
+                                <div class="tool-header">
+                                    <span class="tool-name">Bash</span>
+                                    <span class="tool-tag warning">需谨慎</span>
+                                </div>
+                                <p class="tool-desc">执行 shell 命令，如 git、npm、pytest 等</p>
+                                <div class="tool-example">
+                                    <code>Bash:5→{"command": "git status", "description": "Check git status"}</code>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h2>🤖 智能工具</h2>
+                        <div class="tool-category">
+                            <div class="tool-card">
+                                <div class="tool-header">
+                                    <span class="tool-name">Agent</span>
+                                    <span class="tool-tag">高级</span>
+                                </div>
+                                <p class="tool-desc">委派子任务给专门的 Agent 处理</p>
+                            </div>
+                            <div class="tool-card">
+                                <div class="tool-header">
+                                    <span class="tool-name">WebSearch</span>
+                                    <span class="tool-tag">网络</span>
+                                </div>
+                                <p class="tool-desc">搜索网络信息，获取最新资料</p>
+                            </div>
+                            <div class="tool-card">
+                                <div class="tool-header">
+                                    <span class="tool-name">WebFetch</span>
+                                    <span class="tool-tag">网络</span>
+                                </div>
+                                <p class="tool-desc">获取并解析网页内容</p>
+                            </div>
+                        </div>
+
+                        <div class="insight-box">
+                            <strong>🔍 从源码看工具系统</strong>
+                            <p>根据 <code>restored-src/src/tools/Tool.ts</code>，每个工具都有统一的接口：</p>
+                            <ul>
+                                <li><strong>name</strong>：工具名称</li>
+                                <li><strong>description</strong>：功能描述（Claude 用它来决定是否调用）</li>
+                                <li><strong>parameters</strong>：参数 Schema（定义需要什么输入）</li>
+                                <li><strong>execute</strong>：执行逻辑</li>
+                            </ul>
+                        </div>
+
+                        <h2>🎨 工具调用流程</h2>
+                        <div class="mermaid-diagram">
+                            <pre>
+你提问 → Claude 分析 → 选择工具 → 执行工具 → 获取结果 → 生成回复
+                ↑___________________________________________↓
+                                    (可能多次循环)
+                            </pre>
+                        </div>
+
+                        <div class="tip-box">
+                            <strong>💡 学习要点</strong>
+                            <p>理解每个工具的<strong>适用场景</strong>和<strong>限制</strong>比记住语法更重要。例如：Grep 适合找代码，Glob 适合找文件，Bash 适合运行命令。</p>
+                        </div>
+                    </div>
+
+                    <div class="section-nav">
+                        <button class="btn btn-secondary" onclick="showSection('chapter1')">← 上一章</button>
+                        <button class="btn btn-primary" onclick="showSection('chapter3')">下一章：命令与技能 →</button>
+                    </div>
+                </section>
+
+                <!-- 第3章：命令与技能 -->
+                <section class="content-section" id="chapter3">
+                    <div class="chapter-header">
+                        <span class="chapter-badge">第 3 章</span>
+                        <h1>命令与技能</h1>
+                        <p class="chapter-desc">掌握 40+ 内置命令和自定义技能系统</p>
+                    </div>
+
+                    <div class="lesson-content">
+                        <h2>⌨️ 什么是命令（Command）？</h2>
+                        <div class="concept-box">
+                            <p>命令是 Claude Code 提供的<strong>快捷操作</strong>，以 <code>/</code> 开头。它们封装了常用工作流，让你不必每次都输入完整的自然语言描述。</p>
+                        </div>
+
+                        <h2>常用命令分类</h2>
+
+                        <h3>📝 代码操作</h3>
+                        <div class="command-table">
+                            <div class="command-row">
+                                <code>/commit</code>
+                                <span>自动生成提交信息并提交代码</span>
+                            </div>
+                            <div class="command-row">
+                                <code>/review</code>
+                                <span>审查当前代码变更（类似 PR Review）</span>
+                            </div>
+                            <div class="command-row">
+                                <code>/clear</code>
+                                <span>清空对话历史</span>
+                            </div>
+                            <div class="command-row">
+                                <code>/compact</code>
+                                <span>压缩对话历史，释放上下文空间</span>
+                            </div>
+                        </div>
+
+                        <h3>⚙️ 配置管理</h3>
+                        <div class="command-table">
+                            <div class="command-row">
+                                <code>/config</code>
+                                <span>查看和修改配置</span>
+                            </div>
+                            <div class="command-row">
+                                <code>/init</code>
+                                <span>创建 CLAUDE.md 项目文档</span>
+                            </div>
+                            <div class="command-row">
+                                <code>/memory</code>
+                                <span>管理持久化记忆</span>
+                            </div>
+                        </div>
+
+                        <h3>🎯 工作模式</h3>
+                        <div class="command-table">
+                            <div class="command-row">
+                                <code>/plan</code>
+                                <span>进入计划模式，先设计后执行</span>
+                            </div>
+                            <div class="command-row">
+                                <code>/fast</code>
+                                <span>切换到快速模式（响应更快）</span>
+                            </div>
+                            <div class="command-row">
+                                <code>/help</code>
+                                <span>查看所有可用命令</span>
+                            </div>
+                        </div>
+
+                        <h2>🎓 技能系统（Skills）</h2>
+                        <div class="concept-box">
+                            <p>技能是可复用的<strong>能力模块</strong>。内置技能如 <code>commit</code>、<code>review-pr</code> 封装了完整的工作流。你也可以创建自定义技能。</p>
+                        </div>
+
+                        <h3>内置技能示例</h3>
+                        <div class="skill-cards">
+                            <div class="skill-card">
+                                <h4>/commit</h4>
+                                <p>自动分析 git diff，生成符合规范的提交信息，并执行提交</p>
+                                <div class="skill-flow">
+                                    <span>分析变更</span> → <span>生成信息</span> → <span>执行提交</span>
+                                </div>
+                            </div>
+                            <div class="skill-card">
+                                <h4>/review-pr</h4>
+                                <p>审查 GitHub Pull Request，提供代码建议</p>
+                                <div class="skill-flow">
+                                    <span>获取 PR</span> → <span>分析代码</span> → <span>输出 Review</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h2>🔧 自定义技能（进阶）</h2>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span>创建自定义技能</span>
+                                <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                            </div>
+                            <pre><code># 在 ~/.claude/skills/ 目录创建 custom-skill.md
+---
+name: deploy-vercel
+description: Deploy current project to Vercel
+---
+
+# Deploy Workflow
+1. Check if vercel CLI is installed
+2. Run build to ensure no errors
+3. Execute `vercel --prod` for production deployment
+4. Return the deployment URL</code></pre>
+                        </div>
+
+                        <div class="tip-box">
+                            <strong>💡 命令 vs 工具的区别</strong>
+                            <table class="simple-table">
+                                <tr>
+                                    <td><strong>命令</strong></td>
+                                    <td>用户主动触发（/开头）</td>
+                                    <td>封装完整工作流</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>工具</strong></td>
+                                    <td>Claude 自动调用</td>
+                                    <td>基础能力单元</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="section-nav">
+                        <button class="btn btn-secondary" onclick="showSection('chapter2')">← 上一章</button>
+                        <button class="btn btn-primary" onclick="showSection('chapter4')">下一章：权限与安全 →</button>
+                    </div>
+                </section>
+
+                <!-- 第4章：权限与安全 -->
+                <section class="content-section" id="chapter4">
+                    <div class="chapter-header">
+                        <span class="chapter-badge">第 4 章</span>
+                        <h1>权限与安全</h1>
+                        <p class="chapter-desc">掌握权限模式、Approval 机制和安全配置</p>
+                    </div>
+
+                    <div class="lesson-content">
+                        <h2>🛡️ 为什么需要权限控制？</h2>
+                        <div class="warning-box">
+                            <p>Claude Code 可以执行 Bash 命令、修改文件、推送代码。如果没有权限控制，可能意外删除重要文件或执行危险操作。</p>
+                        </div>
+
+                        <h2>三种权限模式对比</h2>
+                        <div class="mode-comparison">
+                            <div class="mode-card">
+                                <div class="mode-header manual">
+                                    <h3>手动模式</h3>
+                                    <span class="mode-badge">默认</span>
+                                </div>
+                                <ul class="mode-features">
+                                    <li>✅ 每次工具调用都询问</li>
+                                    <li>✅ 最安全，适合新手</li>
+                                    <li>❌ 效率较低</li>
+                                </ul>
+                                <div class="mode-example">
+                                    <code>claude</code>
+                                </div>
+                            </div>
+                            <div class="mode-card">
+                                <div class="mode-header auto">
+                                    <h3>Auto Mode</h3>
+                                    <span class="mode-badge">推荐</span>
+                                </div>
+                                <ul class="mode-features">
+                                    <li>✅ Claude 自动判断安全性</li>
+                                    <li>✅ 安全操作自动执行</li>
+                                    <li>⚠️ 危险操作会阻断</li>
+                                </ul>
+                                <div class="mode-example">
+                                    <code>claude --permission-mode auto</code>
+                                </div>
+                            </div>
+                            <div class="mode-card">
+                                <div class="mode-header full">
+                                    <h3>Full Auto</h3>
+                                    <span class="mode-badge warning">谨慎</span>
+                                </div>
+                                <ul class="mode-features">
+                                    <li>✅ 极少询问</li>
+                                    <li>⚠️ 危险操作也会执行</li>
+                                    <li>❌ 不适合生产环境</li>
+                                </ul>
+                                <div class="mode-example">
+                                    <code>claude --permission-mode full-auto</code>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h2>⚙️ 配置文件详解</h2>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span>~/.claude/settings.json</span>
+                                <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                            </div>
+                            <pre><code>{
+  "permissions": {
+    "defaultMode": "auto",
+    "allow": [
+      "Bash:git status",
+      "Bash:git diff",
+      "Bash:pytest*",
+      "Bash:npm install*",
+      "WebSearch:*",
+      "Read:*",
+      "Write:*"
+    ],
+    "deny": [
+      "Bash:rm*",
+      "Bash:git push*",
+      "Bash:sudo*",
+      "Write:.env*"
+    ]
+  }
+}</code></pre>
+                        </div>
+
+                        <h3>配置项说明</h3>
+                        <table class="config-table">
+                            <tr>
+                                <th>配置项</th>
+                                <th>说明</th>
+                                <th>示例</th>
+                            </tr>
+                            <tr>
+                                <td><code>defaultMode</code></td>
+                                <td>默认权限模式</td>
+                                <td>"manual", "auto", "full-auto"</td>
+                            </tr>
+                            <tr>
+                                <td><code>allow</code></td>
+                                <td>自动允许的工具/命令</td>
+                                <td>["Bash:*", "Read:*"]</td>
+                            </tr>
+                            <tr>
+                                <td><code>deny</code></td>
+                                <td>始终拒绝的操作</td>
+                                <td>["Bash:rm*"]</td>
+                            </tr>
+                        </table>
+
+                        <h2>🔐 危险操作识别</h2>
+                        <div class="danger-list">
+                            <div class="danger-item">
+                                <span class="danger-icon">🗑️</span>
+                                <div>
+                                    <strong>删除操作</strong>
+                                    <code>rm -rf</code> 会永久删除文件
+                                </div>
+                            </div>
+                            <div class="danger-item">
+                                <span class="danger-icon">📤</span>
+                                <div>
+                                    <strong>强制推送</strong>
+                                    <code>git push --force</code> 会覆盖远程历史
+                                </div>
+                            </div>
+                            <div class="danger-item">
+                                <span class="danger-icon">🔑</span>
+                                <div>
+                                    <strong>敏感文件</strong>
+                                    <code>.env</code>、<code>config.json</code> 包含密钥
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tip-box">
+                            <strong>💡 最佳实践</strong>
+                            <ol>
+                                <li>新项目先用 <strong>手动模式</strong>，了解 Claude 的行为</li>
+                                <li>熟悉后切换到 <strong>Auto Mode</strong>，平衡效率和安全</li>
+                                <li>生产环境慎用 <strong>Full Auto</strong></li>
+                                <li>用 <code>deny</code> 配置保护敏感操作</li>
+                            </ol>
+                        </div>
+                    </div>
+
+                    <div class="section-nav">
+                        <button class="btn btn-secondary" onclick="showSection('chapter3')">← 上一章</button>
+                        <button class="btn btn-primary" onclick="showSection('chapter5')">下一章：高级功能 →</button>
+                    </div>
+                </section>
+
+                <!-- 第5章：高级功能 -->
+                <section class="content-section" id="chapter5">
+                    <div class="chapter-header">
+                        <span class="chapter-badge">第 5 章</span>
+                        <h1>高级功能</h1>
+                        <p class="chapter-desc">Agent 模式、Hooks、Coordinator 等进阶特性</p>
+                    </div>
+
+                    <div class="lesson-content">
+                        <h2>🤖 Agent 模式详解</h2>
+                        <div class="concept-box highlight">
+                            <p><strong>Agent 模式</strong>让 Claude 能够自主规划并执行多步骤任务，而不是每步都问你。它会拆解任务、并行执行、自动纠错。</p>
+                        </div>
+
+                        <h3>Agent vs 普通模式对比</h3>
+                        <div class="comparison-visual">
+                            <div class="compare-side">
+                                <h4>普通模式</h4>
+                                <div class="flow-simple">
+                                    <div class="bubble">你：改这个文件</div>
+                                    <div class="arrow">↓</div>
+                                    <div class="bubble">Claude：改好了，下一步？</div>
+                                    <div class="arrow">↓</div>
+                                    <div class="bubble">你：改那个文件</div>
+                                    <div class="arrow">↓</div>
+                                    <div class="bubble">Claude：改好了...</div>
+                                </div>
+                                <p class="compare-note">❌ 10 个文件 = 10 轮对话</p>
+                            </div>
+                            <div class="compare-vs">VS</div>
+                            <div class="compare-side">
+                                <h4>Agent 模式</h4>
+                                <div class="flow-agent">
+                                    <div class="bubble">你：重构这10个文件</div>
+                                    <div class="arrow">↓</div>
+                                    <div class="bubble agent">Claude Agent
+                                        <div class="sub-steps">
+                                            <span>分析依赖</span>
+                                            <span>并行修改</span>
+                                            <span>运行测试</span>
+                                        </div>
+                                    </div>
+                                    <div class="arrow">↓</div>
+                                    <div class="bubble success">✅ 全部完成！</div>
+                                </div>
+                                <p class="compare-note">✅ 10 个文件 = 1 轮对话</p>
+                            </div>
+                        </div>
+
+                        <h2>🪝 Hooks 系统</h2>
+                        <div class="concept-box">
+                            <p><strong>Hooks</strong> 让你在特定事件发生时自动执行操作，实现真正的自动化工作流。</p>
+                        </div>
+
+                        <h3>可用 Hooks</h3>
+                        <div class="hooks-grid">
+                            <div class="hook-card">
+                                <code>SessionStart</code>
+                                <p>每次启动 Claude Code 时触发</p>
+                            </div>
+                            <div class="hook-card">
+                                <code>FileWrite</code>
+                                <p>写入文件后触发</p>
+                            </div>
+                            <div class="hook-card">
+                                <code>FileEdit</code>
+                                <p>编辑文件后触发</p>
+                            </div>
+                            <div class="hook-card">
+                                <code>UserPromptSubmit</code>
+                                <p>用户发送消息前触发</p>
+                            </div>
+                        </div>
+
+                        <h3>Hook 配置示例</h3>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span>自动格式化 + 测试</span>
+                                <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                            </div>
+                            <pre><code>{
+  "hooks": {
+    "FileWrite": [
+      {
+        "matcher": "*.py",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "black $CLAUDE_FILE && pytest $CLAUDE_FILE -x"
+          }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+                        </div>
+
+                        <h2>🎯 Coordinator 多 Agent 协调</h2>
+                        <div class="concept-box">
+                            <p>复杂任务可以委派给多个专门的 Agent，它们并行工作，Coordinator 负责协调结果。</p>
+                        </div>
+
+                        <div class="coordinator-diagram">
+                            <div class="center-node">Coordinator</div>
+                            <div class="agent-nodes">
+                                <div class="agent-node">Search Agent<br><small>搜索代码</small></div>
+                                <div class="agent-node">Edit Agent<br><small>修改文件</small></div>
+                                <div class="agent-node">Test Agent<br><small>运行测试</small></div>
+                                <div class="agent-node">Review Agent<br><small>审查结果</small></div>
+                            </div>
+                        </div>
+
+                        <h2>📝 其他高级特性</h2>
+                        <div class="feature-list">
+                            <div class="feature-item">
+                                <h4>🎤 语音交互</h4>
+                                <p>支持语音输入，解放双手</p>
+                            </div>
+                            <div class="feature-item">
+                                <h4>⌨️ Vim 模式</h4>
+                                <p>熟悉的 Vim 键位支持</p>
+                            </div>
+                            <div class="feature-item">
+                                <h4>🔌 MCP 协议</h4>
+                                <p>Model Context Protocol，连接外部工具</p>
+                            </div>
+                            <div class="feature-item">
+                                <h4>🌐 远程会话</h4>
+                                <p>在远程服务器上运行 Claude Code</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section-nav">
+                        <button class="btn btn-secondary" onclick="showSection('chapter4')">← 上一章</button>
+                        <button class="btn btn-primary" onclick="showSection('chapter6')">下一章：实战案例 →</button>
+                    </div>
+                </section>
+
+                <!-- 第6章：实战案例 -->
+                <section class="content-section" id="chapter6">
+                    <div class="chapter-header">
+                        <span class="chapter-badge">第 6 章</span>
+                        <h1>实战案例</h1>
+                        <p class="chapter-desc">通过真实场景掌握 Claude Code 的应用技巧</p>
+                    </div>
+
+                    <div class="lesson-content">
+                        <h2>📋 案例 1：新项目接入配置</h2>
+                        <div class="case-study">
+                            <div class="case-header">
+                                <span class="case-tag">配置类</span>
+                                <h3>为团队创建标准化的 Claude Code 配置</h3>
+                            </div>
+                            <div class="case-steps">
+                                <div class="step">
+                                    <div class="step-num">1</div>
+                                    <div class="step-content">
+                                        <h4>创建项目级配置</h4>
+                                        <p>在项目根目录创建 <code>.claude/CLAUDE.md</code>：</p>
+                                        <div class="code-block small">
+                                            <pre><code># 项目规范
+
+## 技术栈
+- React + TypeScript
+- Tailwind CSS
+- Jest 测试
+
+## 代码规范
+- 使用函数组件
+- Props 必须定义类型
+- 组件必须写测试
+
+## 提交规范
+- feat: 新功能
+- fix: Bug 修复
+- refactor: 重构</code></pre>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="step">
+                                    <div class="step-num">2</div>
+                                    <div class="step-content">
+                                        <h4>配置权限</h4>
+                                        <p>编辑 <code>~/.claude/settings.json</code>，允许该项目的测试命令：</p>
+                                        <div class="code-block small">
+                                            <pre><code>{
+  "permissions": {
+    "allow": [
+      "Bash:npm test*",
+      "Bash:npm run build"
+    ]
+  }
+}</code></pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h2>🔄 案例 2：自动化开发工作流</h2>
+                        <div class="case-study">
+                            <div class="case-header">
+                                <span class="case-tag">自动化</span>
+                                <h3>保存文件时自动格式化 + 测试</h3>
+                            </div>
+                            <div class="case-solution">
+                                <div class="code-block">
+                                    <div class="code-header">
+                                        <span>~/.claude/settings.json</span>
+                                    </div>
+                                    <pre><code>{
+  "permissions": {
+    "allow": [
+      "Bash:prettier*",
+      "Bash:eslint*",
+      "Bash:jest*"
+    ]
+  },
+  "hooks": {
+    "FileWrite": [
+      {
+        "matcher": "*.{js,ts,tsx}",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "prettier --write $CLAUDE_FILE"
+          },
+          {
+            "type": "command",
+            "command": "eslint --fix $CLAUDE_FILE"
+          }
+        ]
+      }
+    ],
+    "FileEdit": [
+      {
+        "matcher": "*.test.{js,ts}",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jest $CLAUDE_FILE --coverage"
+          }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+                                </div>
+                                <div class="case-result">
+                                    <strong>效果：</strong>每次修改 JS/TS 文件，自动格式化；修改测试文件，自动运行测试。
+                                </div>
+                            </div>
+                        </div>
+
+                        <h2>🔍 案例 3：代码库探索</h2>
+                        <div class="case-study">
+                            <div class="case-header">
+                                <span class="case-tag">探索类</span>
+                                <h3>快速理解陌生项目的结构</h3>
+                            </div>
+                            <div class="case-dialog">
+                                <div class="dialog-user">
+                                    <strong>你：</strong>
+                                    <p>我刚接手这个项目，帮我理解一下整体架构，找出核心模块和入口文件。</p>
+                                </div>
+                                <div class="dialog-claude">
+                                    <strong>Claude：</strong>
+                                    <div class="claude-action">
+                                        <span class="action-badge">Glob</span>
+                                        <code>查找所有入口文件 **/index.{js,ts}</code>
+                                    </div>
+                                    <div class="claude-action">
+                                        <span class="action-badge">Read</span>
+                                        <code>读取 package.json 分析依赖</code>
+                                    </div>
+                                    <div class="claude-action">
+                                        <span class="action-badge">Grep</span>
+                                        <code>搜索路由/API 定义</code>
+                                    </div>
+                                    <p><strong>分析结果：</strong></p>
+                                    <ul>
+                                        <li>🎯 入口：<code>src/main.ts</code></li>
+                                        <li>📁 核心模块：<code>src/core/</code>、<code>src/api/</code></li>
+                                        <li>🔧 技术栈：Express + TypeScript + Prisma</li>
+                                        <li>📊 数据库：PostgreSQL，ORM 使用 Prisma</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h2>🐛 案例 4：Bug 修复</h2>
+                        <div class="case-study">
+                            <div class="case-header">
+                                <span class="case-tag">调试类</span>
+                                <h3>根据错误信息定位和修复 Bug</h3>
+                            </div>
+                            <div class="case-dialog">
+                                <div class="dialog-user">
+                                    <strong>你：</strong>
+                                    <p>我运行 <code>npm test</code> 时报错，帮我看看：
+                                    <br><code>Error: Cannot find module '../utils/helpers'</code></p>
+                                </div>
+                                <div class="dialog-claude">
+                                    <strong>Claude：</strong>
+                                    <div class="claude-action">
+                                        <span class="action-badge">Bash</span>
+                                        <code>运行 npm test 查看完整错误堆栈</code>
+                                    </div>
+                                    <div class="claude-action">
+                                        <span class="action-badge">Glob</span>
+                                        <code>查找 helpers 文件位置</code>
+                                    </div>
+                                    <div class="claude-action">
+                                        <span class="action-badge">Read</span>
+                                        <code>检查导入路径</code>
+                                    </div>
+                                    <p><strong>问题定位：</strong>文件在 <code>src/utils/helper.ts</code>（单数），但导入写的是 <code>../utils/helpers</code>（复数）。</p>
+                                    <div class="claude-action">
+                                        <span class="action-badge">Edit</span>
+                                        <code>修复导入路径</code>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h2>🎓 学习路径建议</h2>
+                        <div class="learning-path">
+                            <div class="path-item completed">
+                                <span class="path-check">✓</span>
+                                <span>第 1-2 周：熟悉基础工具（Read/Write/Edit/Bash）</span>
+                            </div>
+                            <div class="path-item completed">
+                                <span class="path-check">✓</span>
+                                <span>第 3-4 周：掌握命令和权限配置</span>
+                            </div>
+                            <div class="path-item active">
+                                <span class="path-check">→</span>
+                                <span>第 5-6 周：尝试 Agent 模式完成小任务</span>
+                            </div>
+                            <div class="path-item">
+                                <span class="path-check">○</span>
+                                <span>第 7-8 周：配置 Hooks 自动化工作流</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section-nav">
+                        <button class="btn btn-secondary" onclick="showSection('chapter5')">← 上一章</button>
+                        <button class="btn btn-primary" onclick="showSection('resources')">查看参考资源 →</button>
+                    </div>
+                </section>
+
+                <!-- 参考资源 -->
+                <section class="content-section" id="resources">
+                    <div class="chapter-header">
+                        <span class="chapter-badge">📚</span>
+                        <h1>参考资源</h1>
+                        <p class="chapter-desc">进一步学习和查阅的资料</p>
+                    </div>
+
+                    <div class="lesson-content">
+                        <h2>📖 官方文档</h2>
+                        <div class="resource-list">
+                            <a href="https://code.claude.com/docs" class="resource-card" target="_blank">
+                                <div class="resource-icon">📘</div>
+                                <div class="resource-info">
+                                    <h4>Claude Code 官方文档</h4>
+                                    <p>最权威的使用指南和 API 参考</p>
+                                </div>
+                            </a>
+                            <a href="https://www.anthropic.com/engineering/claude-code" class="resource-card" target="_blank">
+                                <div class="resource-icon">🏢</div>
+                                <div class="resource-info">
+                                    <h4>Anthropic 工程博客</h4>
+                                    <p>Claude Code 的设计理念和最佳实践</p>
+                                </div>
+                            </a>
+                        </div>
+
+                        <h2>🔧 本仓库源码参考</h2>
+                        <div class="resource-list">
+                            <div class="resource-card local">
+                                <div class="resource-icon">📂</div>
+                                <div class="resource-info">
+                                    <h4>restored-src/src/tools/</h4>
+                                    <p>30+ 工具的完整实现源码</p>
+                                    <code>文件路径: restored-src/src/tools/</code>
+                                </div>
+                            </div>
+                            <div class="resource-card local">
+                                <div class="resource-icon">📂</div>
+                                <div class="resource-info">
+                                    <h4>restored-src/src/commands/</h4>
+                                    <p>40+ 命令的实现源码</p>
+                                    <code>文件路径: restored-src/src/commands/</code>
+                                </div>
+                            </div>
+                            <div class="resource-card local">
+                                <div class="resource-icon">📂</div>
+                                <div class="resource-info">
+                                    <h4>restored-src/src/hooks/</h4>
+                                    <p>Hooks 系统的实现</p>
+                                    <code>文件路径: restored-src/src/hooks/</code>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h2>🎓 学习建议</h2>
+                        <div class="tip-box large">
+                            <strong>如何深入学习源码？</strong>
+                            <ol>
+                                <li><strong>从工具开始：</strong>阅读 <code>tools/BashTool.ts</code>，理解工具的基本结构</li>
+                                <li><strong>理解调用流程：</strong>查看 <code>Tool.ts</code> 中的工具注册和执行逻辑</li>
+                                <li><strong>研究命令：</strong>以 <code>commands/commit.ts</code> 为例，学习如何封装工作流</li>
+                                <li><strong>探索 Hooks：</strong>查看 <code>hooks/fileSuggestions.ts</code>，理解事件响应机制</li>
+                            </ol>
+                        </div>
+
+                        <div class="completion-card">
+                            <div class="completion-icon">🎉</div>
+                            <h2>恭喜完成学习！</h2>
+                            <p>你已经掌握了 Claude Code 的核心概念和使用方法。</p>
+                            <p>现在，打开终端，运行 <code>claude</code>，开始你的 AI 编程之旅吧！</p>
+                            <button class="btn btn-primary btn-large" onclick="showSection('welcome')">返回首页复习</button>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- 测验弹窗 -->
+    <div class="quiz-modal" id="quiz-modal">
+        <div class="quiz-content">
+            <div class="quiz-header">
+                <h3>📝 知识测验</h3>
+                <button class="close-btn" onclick="closeQuiz()">×</button>
+            </div>
+            <div class="quiz-body" id="quiz-body">
+                <!-- 测验内容动态生成 -->
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
